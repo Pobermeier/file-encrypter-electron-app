@@ -6,18 +6,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Awesome File Encrypter</title>
 
+  <link rel="stylesheet" href="./css/all.min.css">
+  <link rel="stylesheet" href="./css/skeleton.min.css">
   <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
-  <h1>Awesome File Encrypter</h1>
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum rerum cupiditate reiciendis blanditiis repellendus
-    fuga sapiente debitis nobis ipsa labore, assumenda inventore temporibus totam nulla quod nisi, quam vitae tempore ea
-    repudiandae aliquid, doloremque doloribus odio. Quo nihil velit fugiat non a nulla officiis sint asperiores
-    distinctio soluta quod aliquam odio suscipit modi tempora, corrupti est libero ut, qui debitis optio veritatis.
-    Similique eos et nesciunt rem, vero voluptas facilis animi vitae illum alias maxime nulla cupiditate natus non unde
-    id cumque tempora earum porro adipisci repellat fugit veniam atque ab. Laboriosam temporibus, ratione veritatis ex
-    omnis ab molestiae ea.</p>
+  <main>
+    <div class="container">
+      <h1 class="text-center"><i class="fa fa-file" style="margin-top: 3rem;"></i> File Encrypter</h1>
+      <br>
+      <h3 class="text-center">Easy-peasy file cryptography</h3>
+      <p class="text-center">It's easy! Just drag & drop an unencrypted file to encrypt it. Decrypting a file goes vice
+        versa.</p>
+      <form id="file-form" class="text-center">
+        <div class="row">
+          <label for="file">File to encrypt / decrypt</label>
+          <input type="file" name="file" id="file" required>
+        </div>
+        <div class="row">
+          <label for="password">Encryption password</label>
+          <input type="password" name="password" id="password" required minlength="10">
+        </div>
+        <button type="submit" class="button-primary">Encrypt / Decrypt File</button>
+      </form>
+    </div>
+  </main>
+
 
   <script src="./js/app.js"></script>
 </body>
