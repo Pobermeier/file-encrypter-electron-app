@@ -1,7 +1,8 @@
 const path = require('path');
-const fs = require('fs/promises');
+const fs = require('fs');
 const os = require('os');
 const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
+const CryptoJS = require('crypto-js');
 
 // Set node-env
 process.env.NODE_ENV = 'development';
@@ -80,4 +81,72 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createMainWindow();
   }
+});
+
+const userHomeDirectory = os.homedir();
+const savePath = path.join(userHomeDirectory, 'awesome-file-encrypter');
+
+ipcMain.on(
+  'encrypt',
+  (e, filePath, password, fileNameWithoutExtension, fileExtension) => {
+    let originalContent = fs.readFileSync(filePath).toString();
+
+    // Add original file-extension to end of file content for decryption
+    originalContent += `{{fileExtension:${fileExtension}}}`;
+
+    try {
+      const encryptedContent = CryptoJS.AES.encrypt(
+        originalContent,
+        password,
+      ).toString();
+
+      !fs.existsSync(savePath) && fs.mkdirSync(savePath);
+
+      fs.writeFileSync(
+        path.join(savePath, `${fileNameWithoutExtension}.secret`),
+        encryptedContent,
+      );
+
+      shell.openPath(savePath);
+    } catch (error) {
+      mainWindow.webContents.send('alert', error.message);
+    }
+
+    mainWindow.webContents.send('alert', 'File successfully encrypted');
+  },
+);
+
+ipcMain.on('decrypt', (e, filePath, password, fileNameWithoutExtension) => {
+  const encryptedContent = fs.readFileSync(filePath).toString();
+
+  let decryptedContent;
+
+  try {
+    decryptedContent = CryptoJS.AES.decrypt(
+      encryptedContent,
+      password,
+    ).toString(CryptoJS.enc.Utf8);
+
+    // Get file-extension that has been added to the file during encryption and delete it from file
+    const fileExtension = decryptedContent
+      .substring(decryptedContent.search(/{{(?:.*)}}/), decryptedContent.length)
+      .replace('{{', '')
+      .replace('}}', '')
+      .split(':')[1];
+
+    decryptedContent = decryptedContent.replace(/{{(?:.*)}}/, '');
+
+    !fs.existsSync(savePath) && fs.mkdirSync(savePath);
+
+    fs.writeFileSync(
+      path.join(savePath, `${fileNameWithoutExtension}.${fileExtension}`),
+      decryptedContent,
+    );
+
+    shell.openPath(savePath);
+  } catch (error) {
+    mainWindow.webContents.send('alert', error.message);
+  }
+
+  mainWindow.webContents.send('alert', 'File successfully decrypted');
 });
