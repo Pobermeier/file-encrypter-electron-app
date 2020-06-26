@@ -5,7 +5,7 @@ const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
 const CryptoJS = require('crypto-js');
 
 // Set node-env
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = 'production';
 
 // Check if env is "development"
 const isDev = process.env.NODE_ENV !== 'production';
