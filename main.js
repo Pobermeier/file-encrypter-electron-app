@@ -21,7 +21,7 @@ function createMainWindow() {
     width: isDev ? 800 : 500,
     x: isDev && 1120,
     y: isDev && 100,
-    height: isDev ? 900 : 600,
+    height: isDev ? 900 : 650,
     title: 'Awesome File Encrypter',
     resizable: isDev,
     backgroundColor: 'white',
