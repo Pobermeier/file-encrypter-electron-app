@@ -127,6 +127,8 @@ ipcMain.on('decrypt', (e, filePath, password, fileNameWithoutExtension) => {
       password,
     ).toString(CryptoJS.enc.Utf8);
 
+    console.log(decryptedContent);
+
     // Get file-extension that has been added to the file during encryption and delete it from file
     const fileExtension = decryptedContent
       .substring(decryptedContent.search(/{{(?:.*)}}/), decryptedContent.length)
@@ -135,6 +137,8 @@ ipcMain.on('decrypt', (e, filePath, password, fileNameWithoutExtension) => {
       .split(':')[1];
 
     decryptedContent = decryptedContent.replace(/{{(?:.*)}}/, '');
+
+    console.log(decryptedContent);
 
     !fs.existsSync(savePath) && fs.mkdirSync(savePath);
 
