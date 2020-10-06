@@ -19,7 +19,7 @@
   "author": "Patrick Obermeier",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^9.0.5",
+    "electron": "^9.3.0",
     "nodemon": "^2.0.4"
   },
   "dependencies": {
